@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import * as firebaseAuth from 'firebase/auth'; // Fix: Namespace import
+import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../../../services/firebase';
 import { Lock, Hammer, AlertCircle, Loader2, Chrome } from 'lucide-react';
 
@@ -21,7 +21,7 @@ export const LoginScreen: React.FC = () => {
     }
 
     try {
-      await firebaseAuth.signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       // O AdminApp detectará a mudança de estado automaticamente via onAuthStateChanged
     } catch (err: any) {
       console.error(err);
@@ -48,7 +48,7 @@ export const LoginScreen: React.FC = () => {
     }
 
     try {
-        await firebaseAuth.signInWithPopup(auth, googleProvider);
+        await signInWithPopup(auth, googleProvider);
     } catch (err: any) {
         console.error(err);
         if (err.code === 'auth/popup-closed-by-user') {

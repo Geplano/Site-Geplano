@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import * as firebaseAuth from 'firebase/auth';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 
 // --- CONFIGURAÇÃO DO FIREBASE ---
 // As credenciais já foram configuradas anteriormente pelo usuário.
@@ -28,9 +28,9 @@ try {
     db = getFirestore(app);
     storage = getStorage(app);
     
-    // Initialize Auth using namespace import to avoid import errors
-    auth = firebaseAuth.getAuth(app);
-    googleProvider = new firebaseAuth.GoogleAuthProvider();
+    // Initialize Auth using named imports
+    auth = getAuth(app);
+    googleProvider = new GoogleAuthProvider();
     
     isFirebaseInitialized = true;
     console.log("Firebase (DB, Auth, Google) inicializado com sucesso.");

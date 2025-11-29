@@ -133,11 +133,14 @@ export const Header: React.FC<HeaderProps> = ({ data }) => {
 
 	const headerClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
 		isScrolled || isMenuOpen
-			? 'bg-white/95 backdrop-blur-md shadow-lg py-3 md:py-4'
-			: 'bg-transparent py-5 md:py-6'
+			? 'bg-white/95 backdrop-blur-md shadow-lg py-2 md:py-3 lg:py-4'
+			: 'bg-transparent py-4 md:py-6 lg:py-8'
 	}`;
 
-	const textClass = isScrolled || isMenuOpen ? 'text-gray-800' : 'text-white';
+	const SCROLLED_TEXT_CLASS = 'text-gray-800';
+	const TRANSPARENT_TEXT_CLASS = 'text-white shadow-black/20 text-shadow-sm'; // Added text-shadow for better readability on images
+
+	const textClass = isScrolled || isMenuOpen ? SCROLLED_TEXT_CLASS : TRANSPARENT_TEXT_CLASS;
 
 	// Logic to show black logo: if scrolled OR menu is open
 	const showBlackLogo = isScrolled || isMenuOpen;
@@ -145,21 +148,31 @@ export const Header: React.FC<HeaderProps> = ({ data }) => {
 	const desktopLinkClass = (href: string) => {
 		const isActive = activeSection === href;
 		const colorClass = isActive ? 'text-geplano-gold' : textClass;
+		
+		// RESPONSIVE FONT SIZE:
+		// text-[11px] on large tablets/small laptops (lg)
+		// text-xs (12px) on desktops (xl)
+		// text-sm (14px) on large screens (2xl - 1920px)
+		const fontSizeClass = 'text-[10px] lg:text-[11px] xl:text-xs 2xl:text-sm';
+		
 		const underlineClass = isActive
 			? 'after:absolute after:left-0 after:-bottom-0.5 after:h-0.5 after:w-full after:bg-geplano-gold hover:text-geplano-gold'
 			: 'hover:text-geplano-gold';
-		return `text-xs xl:text-sm font-bold uppercase tracking-wide transition-colors relative pb-1 ${colorClass} ${underlineClass}`;
+			
+		return `${fontSizeClass} font-bold uppercase tracking-wide transition-colors relative pb-1 whitespace-nowrap ${colorClass} ${underlineClass}`;
 	};
 
 	return (
 		<header className={headerClass}>
-			<div className="container mx-auto px-4 flex justify-between items-center">
-				{/* LOGO AREA - Replaces SVG/Text with Images */}
+			{/* Changed container to fluid width with max constraint for 1920px screens */}
+			<div className="w-full max-w-[1920px] mx-auto px-4 sm:px-8 lg:px-12 flex justify-between items-center">
+				
+				{/* LOGO AREA */}
 				<a
 					href="#home"
-					className="relative h-12 md:h-16 w-48 md:w-56 flex-shrink-0"
+					className="relative h-10 md:h-12 lg:h-14 xl:h-16 w-32 md:w-40 lg:w-48 xl:w-56 flex-shrink-0 transition-all duration-300"
 				>
-					{/* Branca (White) - Visible when transparent header */}
+					{/* Branca (White) */}
 					<img
 						src={WHITE_LOGO_SRC}
 						alt="Geplano"
@@ -170,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({ data }) => {
 						}`}
 					/>
 
-					{/* Preta (Black) - Visible when white header */}
+					{/* Preta (Black) */}
 					<img
 						src={BLACK_LOGO_SRC}
 						alt="Geplano"
@@ -183,7 +196,8 @@ export const Header: React.FC<HeaderProps> = ({ data }) => {
 				</a>
 
 				{/* Desktop Nav */}
-				<nav className="hidden lg:flex items-center space-x-6">
+				{/* RESPONSIVE GAP: gap-4 (tight) -> gap-6 (normal) -> gap-8 (wide) */}
+				<nav className="hidden lg:flex items-center gap-x-3 xl:gap-x-5 2xl:gap-x-8">
 					{navLinks.map((link) => (
 						<a
 							key={link.href}
@@ -203,7 +217,7 @@ export const Header: React.FC<HeaderProps> = ({ data }) => {
 					{/* Temporary Admin Link */}
 					<a
 						href="#/admin"
-						className={`text-xs xl:text-sm font-bold uppercase tracking-wide text-red-500 hover:text-red-700 transition-colors flex items-center gap-1`}
+						className={`text-[10px] lg:text-[11px] xl:text-xs 2xl:text-sm font-bold uppercase tracking-wide text-red-500 hover:text-red-700 transition-colors flex items-center gap-1 whitespace-nowrap`}
 					>
 						<Lock className="w-3 h-3" /> Admin
 					</a>
@@ -212,7 +226,7 @@ export const Header: React.FC<HeaderProps> = ({ data }) => {
 						href={PORTAL_URL}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="bg-geplano-gold hover:bg-geplano-goldHover text-white px-6 py-2 rounded-md text-sm font-bold uppercase transition-all transform hover:-translate-y-0.5 shadow-sm"
+						className="bg-geplano-gold hover:bg-geplano-goldHover text-white px-3 lg:px-5 xl:px-6 py-2 rounded-md text-[10px] lg:text-xs xl:text-sm font-bold uppercase transition-all transform hover:-translate-y-0.5 shadow-sm whitespace-nowrap ml-2"
 					>
 						{data.nav_portal}
 					</a>
@@ -236,7 +250,7 @@ export const Header: React.FC<HeaderProps> = ({ data }) => {
 			{/* Mobile Menu */}
 			{isMenuOpen && (
 				<div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-xl border-t border-gray-100 animate-fade-in-up">
-					<div className="flex flex-col px-6 py-8 space-y-4 h-screen sm:h-auto overflow-y-auto">
+					<div className="flex flex-col px-6 py-8 space-y-4 h-[calc(100vh-80px)] overflow-y-auto">
 						{navLinks.map((link) => (
 							<a
 								key={link.href}

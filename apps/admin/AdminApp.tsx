@@ -8,7 +8,7 @@ import { SiteData } from '../../types';
 import { FirebaseSetupGuide } from './components/FirebaseSetupGuide';
 import { LoginScreen } from './components/LoginScreen'; // Import Login
 import { auth, db } from '../../services/firebase'; // Import Auth
-import * as firebaseAuth from 'firebase/auth'; // Fix: Namespace import for auth
+import { User, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore'; // Import Firestore functions for whitelist check
 import { ImagePicker } from './components/ImagePicker';
 import {
@@ -179,7 +179,7 @@ export const AdminApp: React.FC = () => {
 		text: string;
 		type: 'success' | 'error';
 	} | null>(null);
-	const [user, setUser] = useState<firebaseAuth.User | null>(null); // Auth State fixed
+	const [user, setUser] = useState<User | null>(null); // Auth State fixed
 	const [authChecking, setAuthChecking] = useState(true);
 	const [accessError, setAccessError] = useState('');
 
@@ -190,7 +190,7 @@ export const AdminApp: React.FC = () => {
 	useEffect(() => {
 		// Auth Listener with Whitelist Check
 		if (auth) {
-			const unsubscribe = firebaseAuth.onAuthStateChanged(
+			const unsubscribe = onAuthStateChanged(
 				auth,
 				async (currentUser) => {
 					if (currentUser) {
@@ -214,7 +214,7 @@ export const AdminApp: React.FC = () => {
 											currentUser.email
 										)
 									) {
-										await firebaseAuth.signOut(auth);
+										await signOut(auth);
 										setAccessError(
 											`Acesso negado para ${currentUser.email}. Contate o administrador.`
 										);
@@ -322,7 +322,7 @@ export const AdminApp: React.FC = () => {
 
 	const handleLogout = async () => {
 		if (auth) {
-			await firebaseAuth.signOut(auth);
+			await signOut(auth);
 		}
 	};
 
