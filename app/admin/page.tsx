@@ -45,6 +45,14 @@ export default function AdminPage() {
 	};
 
 	useEffect(() => {
+		if (!auth) {
+			console.warn(
+				'Firebase auth not initialized; skipping auth listener during build.'
+			);
+			setLoading(false);
+			return;
+		}
+
 		const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
 			setUser(currentUser);
 			if (currentUser) {
@@ -119,6 +127,10 @@ export default function AdminPage() {
 	};
 
 	const handleLogout = async () => {
+		if (!auth) {
+			console.warn('Auth not initialized; cannot sign out.');
+			return;
+		}
 		await signOut(auth);
 	};
 
