@@ -13,12 +13,26 @@ const firebaseConfig = {
 	measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+const hasApiKey = Boolean(firebaseConfig.apiKey);
+const isBrowser = typeof window !== 'undefined';
+
+let app: ReturnType<typeof initializeApp> | undefined;
+if (hasApiKey && isBrowser) {
+	try {
+		app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+	} catch (e) {
+		console.warn('Firebase initialization failed:', e);
+	}
+} else if (!hasApiKey) {
+	console.warn(
+		'NEXT_PUBLIC_FIREBASE_API_KEY not set; skipping Firebase init during build.'
+	);
+}
+
+const db = app ? getFirestore(app) : undefined;
+const storage = app ? getStorage(app) : undefined;
+const auth = app && isBrowser ? getAuth(app) : undefined;
+const googleProvider = isBrowser ? new GoogleAuthProvider() : undefined;
 
 export { db, storage, auth, googleProvider };
 export const DATA_COLLECTION = 'geplano_data';
