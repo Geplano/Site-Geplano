@@ -2,4 +2,3 @@ User-agent: *
 Disallow:
 
 Sitemap: https://xn--geplanogesto-dcb.com.br/sitemap.xml
-Host: xn--geplanogesto-dcb.com.br
