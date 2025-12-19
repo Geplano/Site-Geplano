@@ -12,10 +12,34 @@ export const metadata: Metadata = {
 	title: 'Geplano - Gestão e Consultoria de Obras',
 	description: 'Gerenciamos obras de alto padrão com excelência construtiva.',
 	icons: {
- 		icon: '/site-icon.png',
- 		shortcut: '/site-icon.png',
- 		apple: '/site-icon.png',
- 	},
+		icon: '/site-icon.png',
+		shortcut: '/site-icon.png',
+		apple: '/site-icon.png',
+	},
+	openGraph: {
+		title: 'Geplano — Construir nunca foi tão tranquilo',
+		description:
+			'Gestão de obras de alto padrão com transparência e controle total. São Mateus - ES.',
+		url: 'https://xn--geplanogesto-dcb.com.br/',
+		siteName: 'Geplano',
+		images: [
+			{
+				url: 'https://xn--geplanogesto-dcb.com.br/og-image.jpg',
+				width: 1200,
+				height: 630,
+				alt: 'Geplano — Gestão de Obras',
+			},
+		],
+		locale: 'pt_BR',
+		type: 'website',
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: 'Geplano — Construir nunca foi tão tranquilo',
+		description:
+			'Gestão de obras de alto padrão com transparência e controle total.',
+		images: ['https://xn--geplanogesto-dcb.com.br/og-image.jpg'],
+	},
 };
 
 export default function RootLayout({
@@ -26,6 +50,27 @@ export default function RootLayout({
 	return (
 		<html lang="pt-BR">
 			<body className={`${montserrat.variable} antialiased`}>
+				{/* JSON-LD Organization / LocalBusiness for SEO */}
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{
+						__html: JSON.stringify({
+							'@context': 'https://schema.org',
+							'@type': 'HomeAndConstructionBusiness',
+							name: 'Geplano Gestão e Consultoria de Obras',
+							url: 'https://xn--geplanogesto-dcb.com.br',
+							telephone: '+55 27 99724-7384',
+							email: 'contato@geplanoengenharia.com.br',
+							address: {
+								'@type': 'PostalAddress',
+								addressLocality: 'São Mateus',
+								addressRegion: 'ES',
+								addressCountry: 'BR',
+							},
+							logo: 'https://xn--geplanogesto-dcb.com.br/logo.png',
+						}),
+					}}
+				/>
 				{children}
 			</body>
 		</html>
