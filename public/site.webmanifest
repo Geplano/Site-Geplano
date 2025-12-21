@@ -1,0 +1,15 @@
+{
+  "name": "Geplano - Gestão e Consultoria de Obras",
+  "short_name": "Geplano",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "/site-icon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}

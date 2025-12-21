@@ -17,22 +17,27 @@ const hasApiKey = Boolean(firebaseConfig.apiKey);
 const isBrowser = typeof window !== 'undefined';
 
 let app: ReturnType<typeof initializeApp> | undefined;
-if (hasApiKey && isBrowser) {
+if (hasApiKey) {
 	try {
+		// Initialize Firebase both on server and browser when config is present.
 		app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 	} catch (e) {
 		console.warn('Firebase initialization failed:', e);
 	}
-} else if (!hasApiKey) {
+} else {
 	console.warn(
-		'NEXT_PUBLIC_FIREBASE_API_KEY not set; skipping Firebase init during build.'
+		'NEXT_PUBLIC_FIREBASE_API_KEY not set; skipping Firebase init.'
 	);
 }
 
 const db = app ? getFirestore(app) : undefined;
 const storage = app ? getStorage(app) : undefined;
+// Auth and Google provider should only be used in the browser environment
 const auth = app && isBrowser ? getAuth(app) : undefined;
-const googleProvider = isBrowser ? new GoogleAuthProvider() : undefined;
+const googleProvider =
+	isBrowser && typeof GoogleAuthProvider !== 'undefined'
+		? new GoogleAuthProvider()
+		: undefined;
 
 export { db, storage, auth, googleProvider };
 export const DATA_COLLECTION = 'geplano_data';

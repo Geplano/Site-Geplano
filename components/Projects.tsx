@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { SiteData } from '../lib/types';
 import { Section } from './Section';
 import { Reveal } from './Reveal';
@@ -56,11 +57,24 @@ export const Projects: React.FC<ProjectsProps> = ({ data }) => {
 					<Reveal key={project.id} className="h-full">
 						<div className="bg-white rounded-xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden h-full flex flex-col group border border-gray-100 hover:border-geplano-gold/20 hover:-translate-y-2">
 							<div className="relative overflow-hidden h-64">
-								<img
-									src={project.image}
-									alt={project.title}
-									className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-								/>
+								{/* Use next/image for external/HTTP images to enable optimization.
+									Fallback to <img> for data URLs (base64) to avoid issues with the optimizer. */}
+								{project.image &&
+								project.image.startsWith('data:') ? (
+									<img
+										src={project.image}
+										alt={project.title}
+										className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+									/>
+								) : (
+									<Image
+										src={project.image || ''}
+										alt={project.title}
+										fill
+										sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+										className="object-cover transition-transform duration-700 group-hover:scale-110"
+									/>
+								)}
 								<div className="absolute inset-0 bg-geplano-green/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-sm">
 									<span className="text-white font-bold uppercase tracking-widest border-2 border-white px-6 py-2 hover:bg-white hover:text-geplano-green transition-colors">
 										Ver Detalhes

@@ -22,9 +22,10 @@ export const metadata: Metadata = {
 			'Gestão de obras de alto padrão com transparência e controle total. São Mateus - ES.',
 		url: 'https://xn--geplanogesto-dcb.com.br/',
 		siteName: 'Geplano',
+		// Use site-icon (existing) for OpenGraph fallback to avoid broken links
 		images: [
 			{
-				url: 'https://xn--geplanogesto-dcb.com.br/og-image.jpg',
+				url: '/site-icon.png',
 				width: 1200,
 				height: 630,
 				alt: 'Geplano — Gestão de Obras',
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
 		title: 'Geplano — Construir nunca foi tão tranquilo',
 		description:
 			'Gestão de obras de alto padrão com transparência e controle total.',
-		images: ['https://xn--geplanogesto-dcb.com.br/og-image.jpg'],
+		images: ['/site-icon.png'],
 	},
 };
 
@@ -67,7 +68,8 @@ export default function RootLayout({
 								addressRegion: 'ES',
 								addressCountry: 'BR',
 							},
-							logo: 'https://xn--geplanogesto-dcb.com.br/logo.png',
+							// use an existing public asset
+							logo: '/LogoPretaGrande.png',
 						}),
 					}}
 				/>
